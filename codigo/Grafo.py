@@ -25,6 +25,7 @@ class Grafo:
             vertice2 = int(vertice2)
             peso = float(peso)
             self.matriz[vertice1 - 1][vertice2 - 1] = peso
+            self.matriz[vertice2 - 1][vertice1 - 1] = peso
             self.arestas += 1
         arquivo.close()
 
