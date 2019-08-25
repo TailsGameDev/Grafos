@@ -33,19 +33,16 @@ def Hierholzer(G): #grafo G = (V,E) V = Vertices, E = Edges (arestas)
 def buscarSubcicloEuleriano(G,v,C):
     Ciclo = [v]
     t = v
-    #print("t: " +str(t))
-    # Só prossegue se existir uma aresta não-visitada conectada aC i c l o.
+
+    # Só prossegue se existir uma aresta não-visitada conectada ao ciclo.
     while(True):
         if(not existeArestaNaoVisitada(G,v,C)):
             return[False, None]
         else:
             u = VizinhoNaoVisitado(G,v,C)
-            #print("v: "+str(v)+" u: "+str(u))
 
             C[v][u] = 1 # 1 eh True, -1 eh False, 0 eh nem tem aresta
             C[u][v] = 1 # marca seu correspondente tambem, para nao voltar
-
-            #print(C)
 
             v = u
             Ciclo.append(v)
@@ -68,19 +65,27 @@ def existeArestaNaoVisitada(G,v,C):
     # le a linha da matriz correspondente ao vertice
     for j in range(1,G.qtdVertices()+1):
         if (abs(C[v][j] + 1) < .01):
-            #achou um vizinho nao visitado
+            #achou uma aresta nao visitada
             return True
-    # todos os vizinhos foram visitados:
+    # todas as arestas jah foram visitadas ->
     return False
 
+#na verdade o vizinho pode ter sido visitado, mas nao pela aresta em questao
 def VizinhoNaoVisitado(G,v,C):
     for j in range(1,G.qtdVertices()+1):
         if (abs(C[v][j] + 1) < .01):
             return j
     print("Chamou VizinhoNaoVisitado, mas nao existe nenhum!")
+    raise ValueError('Chamou VizinhoNaoVisitado, mas nao existe nenhum!.')
     return "bug"
 
 
 G = Grafo("euleriano.txt")
 [r, ciclo] = Hierholzer(G)
-print(ciclo)
+
+if(r):
+    print('1')
+    c = str(ciclo)
+    print(c[1:len(c)-1])
+else:
+    print('0')
