@@ -86,6 +86,6 @@ G = Grafo("euleriano.txt")
 if(r):
     print('1')
     c = str(ciclo)
-    print(c[1:len(c)-1])
+    print(c[1:len(c)-1].replace(" ", ""))
 else:
     print('0')
