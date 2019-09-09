@@ -34,6 +34,8 @@ class GrafoLA:
     def qtdArestas(self):
         return self.vqtdArestas
 
+
+    # vertice pode ser tratado como numero ou objeto, e dah uma resposta equivalente
     def grau(self, v):
         if(isinstance(v,int)):
             return len(self.vertices[v].arcos)
