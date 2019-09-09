@@ -74,6 +74,7 @@ class BinHeap:
           self.percDown(i)
           i = i - 1
 
+'''
 bh = BinHeap()
 bh.buildHeap([1,2,3,4,5],['a','b','c','d','e'])
 
@@ -82,3 +83,4 @@ print(bh.delMin())
 print(bh.delMin())
 print(bh.delMin())
 print(bh.delMin())
+'''

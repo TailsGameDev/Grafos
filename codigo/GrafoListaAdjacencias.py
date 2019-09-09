@@ -1,4 +1,4 @@
-class GrafoLA:
+class Grafo:
     def __init__(self, caminho_do_arquivo):
         arquivo = open(caminho_do_arquivo)
         titulo, vertices = arquivo.readline().split()
@@ -9,7 +9,8 @@ class GrafoLA:
         self.vertices = [None] * (vertices+1)
 
         for i in range(1,vertices+1):
-            numero, rotulo = arquivo.readline().split()
+            line = arquivo.readline()
+            numero, rotulo = line.split()
             vertice = Vertice(int(numero), rotulo)
             self.vertices[i] = vertice
 
@@ -95,3 +96,8 @@ class Arco:
         self.destino = v2
         self.peso = peso
         self.visitado = False
+
+'''
+graph = Grafo("dijkstra.txt")
+print(graph.vizinhos(1))
+'''
