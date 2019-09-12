@@ -14,6 +14,7 @@ class BinHeap:
     def __init__(self):
         self.heapList = [0]
         self.currentSize = 0
+        #self.vetor = []
 
 
     def percUp(self,i):
@@ -22,6 +23,8 @@ class BinHeap:
              tmp = self.heapList[i // 2]
              self.heapList[i // 2] = self.heapList[i]
              self.heapList[i] = tmp
+             #self.vetor[self.heapList[i].object] = i
+             #self.vetor[self.heapList[i//2].object] = i//2
           i = i // 2
 
     def insert(self,key, object=None):
