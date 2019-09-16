@@ -48,7 +48,7 @@ class Grafo:
     def vizinhos(self, vertice):
         lista_vizinhos = []
         for i in range(self.matriz.shape[0]):
-            if self.matriz[vertice - 1][i] == 1.0:
+            if self.matriz[vertice - 1][i] != 0:
                 lista_vizinhos.append(i + 1)
         return lista_vizinhos
 
