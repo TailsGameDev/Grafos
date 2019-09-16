@@ -80,7 +80,7 @@ def VizinhoNaoVisitado(G,v,C):
     return "bug"
 
 
-G = Grafo("euleriano.txt")
+G = Grafo("grafo_teste_hierholzer.txt")
 [r, ciclo] = Hierholzer(G)
 
 if(r):

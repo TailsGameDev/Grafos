@@ -50,7 +50,7 @@ def caminhoAteh(inicio,final,A):
 
 s = 2
 
-[D,A] = Dijkstra("dijkstra.txt",s)
+[D,A] = Dijkstra("grafo_teste_dijkstra.txt",s)
 
 for v in range(1,len(D)):
     print( str(v) + ": " + caminhoAteh(s,v,A) + "; d=" + str(D[v]) )
