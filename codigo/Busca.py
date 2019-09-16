@@ -34,7 +34,7 @@ def busca_em_largura(grafo, vertice_inicial):
                 ancestrais[k] = vertice_atual
                 # E coloca-o na fila.
                 fila.put(k)
-    # Retorna um par ordenado com a lista de distancia e a de ancestrais.
+    # Retorna um par ordenado com a lista de distancias e a de ancestrais.
     return (lista_de_distancias, ancestrais)
 
 print("Insira o nome do arquivo contendo o grafo:")
@@ -56,5 +56,3 @@ while i < len(lista_de_distancias) and restantes > 0:
         print("%d: " % i, end="")
         print(*vertices, sep=",")
     i += 1
-
-    

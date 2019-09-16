@@ -11,7 +11,7 @@ def floyd_warshall(grafo):
     	# Inicializa uma nova matriz.
         matriz_atual = numpy.zeros((grafo.qtdVertices(), grafo.qtdVertices()))
         matriz_atual.fill(float("inf"))
-        # Itera sobre todos os vertices grafo (existentes ou nao).
+        # Itera sobre todos os vertices do grafo (existentes ou nao).
         for u in range(grafo.qtdVertices()):
             for v in range(grafo.qtdVertices()):
                 # Realiza operacao de relaxamento.
