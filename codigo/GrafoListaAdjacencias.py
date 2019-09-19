@@ -9,9 +9,10 @@ class Grafo:
         self.vertices = [None] * (vertices+1)
 
         for i in range(1,vertices+1):
-            line = arquivo.readline()
-            numero, rotulo = line.split()
-            vertice = Vertice(int(numero), rotulo)
+            line = arquivo.readline().split()
+            numero = int(line[0])
+            rotulo = " ".join(line[1:])
+            vertice = Vertice(numero, rotulo)
             self.vertices[i] = vertice
 
 
@@ -96,8 +97,3 @@ class Arco:
         self.destino = v2
         self.peso = peso
         self.visitado = False
-
-'''
-graph = Grafo("dijkstra.txt")
-print(graph.vizinhos(1))
-'''
