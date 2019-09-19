@@ -1,56 +1,52 @@
-from GrafoListaAdjacencias import * # o grafo da matriz tava estranho com a funcao vizinhos
+from GrafoListaAdjacencias import *
 from heap import BinHeap
 
-def Dijkstra(path,s):
-    infinito = 999999999999
+def Dijkstra(grafo, vertice_inicial):
 
-    grafo = Grafo(path)
+    D=[None]; A = [None]; C = [None]; verticesIndex = [None]
 
-    D=[None]; A = [None]; C = [None]; verticesIndex= [None]
-
-    for v in range(1,grafo.qtdVertices()+1):
-        D.append(infinito)
+    for v in range(grafo.qtdVertices()):
+        D.append(float("inf"))
         A.append(None)
         C.append(False)
-        #verticesIndex.append(v) #soh pra construir a heap
 
-    D[s] = 0
+    D[vertice_inicial] = 0
 
-    #monte = BinHeap()
-    #monte.buildHeap(D[1::],verticesIndex[1::])
+    monte = BinHeap()
+    monte.buildHeap(D[1:])
 
-    C[0]=True # <- evitando um loop infinito
+    C[0] = True # <- evitando um loop infinito
 
-    while (False in C) :
+    while False in C:
         #argmin
-        u = 1
-        while(C[u]):
-            u+=1
-        for i in range(u,len(D)):
-            if( (not C[i]) and (D[i]<D[u]) ):
-                u = i
-
+        u = monte.delMin()
         C[u] = True
-
-        Nu = grafo.vizinhos(u) # N de neighbors... vizinhos em ingles kk um troço assim
-        for v in Nu:
-            if ( (not C[v]) and D[v] > D[u] + grafo.peso(u,v)):
+        
+        vizinhos = grafo.vizinhos(u)
+        for v in vizinhos:
+            if (not C[v]) and D[v] > D[u] + grafo.peso(u,v):
                 D[v] = D[u] + grafo.peso(u,v)
                 A[v] = u
-                #aqui teria que atualizar o heap se fosse um heap
+                monte.heapList[monte.posicoes[v]].peso = D[u] + grafo.peso(u,v)
+                monte.percUp(monte.posicoes[v])
 
-    return [D,A]
+    return (D,A)
 
 #funcao auxiliar pra imprimir a resposta
-def caminhoAteh(inicio,final,A):
-    if(inicio==final):
+def caminhoAte(inicio,final,A):
+    if(inicio == final):
         return str(inicio)
-    return caminhoAteh(inicio, A[final], A) + ',' + str(final)
+    return caminhoAte(inicio, A[final], A) + ',' + str(final)
 
-
-s = 2
-
-[D,A] = Dijkstra("grafo_teste_dijkstra.txt",s)
+print("Insira o nome do arquivo contendo o grafo:")
+caminho_do_grafo = input()
+print("Insira o vertice inicial:")
+vertice_inicial = int(input())
+grafo = Grafo(caminho_do_grafo)
+(D, A) = Dijkstra(grafo, vertice_inicial)
 
 for v in range(1,len(D)):
-    print( str(v) + ": " + caminhoAteh(s,v,A) + "; d=" + str(D[v]) )
+    if D[v] != float("inf"):
+        print(str(v) + ": " + caminhoAte(vertice_inicial,v,A) + "; d=" + str(D[v]))
+    else:
+        print(str(v) + ": " + "; d=" + str(D[v]))
