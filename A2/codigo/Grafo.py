@@ -3,7 +3,7 @@ import numpy
 
 class Grafo:
 
-    def __init__(self, caminho_do_arquivo):
+    def __init__(self, caminho_do_arquivo=""):
         arquivo = open(caminho_do_arquivo)
         titulo, vertices = arquivo.readline().split()
         vertices = int(vertices)
