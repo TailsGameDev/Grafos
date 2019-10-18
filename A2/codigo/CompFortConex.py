@@ -15,7 +15,6 @@ def dfsVisit(G, v, C, T, A, F, tempo):
     F[v] = tempo[0]
 
 def dfs (G, lista):
-    #print(lista)
     paraTodoV = G.qtdVertices()+1
     C = [False] * paraTodoV
     T = [float('inf')] * paraTodoV
@@ -36,12 +35,19 @@ def componentesFortementeConexas(G):
     #isso resume as linhas 3 e 4 do algoritmo (o transpose)
     G.transpor()
 
+    lista = indicesDosMenoresEmOrdem(F)
+
+
+    [Ct,Tt,Alt,Ft] = dfs(G,lista)
+    return Alt
+
+def indicesDosMenoresEmOrdem(list):
     lista = [] # a ideia eh percorrer os tempos finais Fcopy, e sempre
     menor = float('inf') # pegar o menor e inserir no começo da 'lista'
     Fcopy = [] # com a finalidade de que a lista tenha os vertices decrescendo
-    for k in range(len(F)):
-        Fcopy.append(F[k])
-    for i in range(len(F)-1): #pega o menor e insere no inicio
+    for k in range(len(list)):
+        Fcopy.append(list[k])
+    for i in range(len(list)-1): #pega o menor e insere no inicio
         Fcopy[0] = float('inf')
         menor = float('inf')
         idx=0;
@@ -51,20 +57,16 @@ def componentesFortementeConexas(G):
                 menor = Fcopy[k]
         Fcopy[idx] = float('inf')
         lista.insert(0,idx)
+    return lista
 
-
-    [Ct,Tt,Alt,Ft] = dfs(G,lista)
-    return Alt
-
-
+#testando montagem da lista de decrescentes
+#sentinela = float('inf')
+#print("indices: "+str(indicesDosMenoresEmOrdem([sentinela,4,2,3,1])))
 # ----------- main abaixo
 
-grafo = Grafo("grafoTeste1.txt")
+#grafo = Grafo("grafoDummy.txt","dirigido")
+grafo = Grafo("grafocfc.txt","dirigido")
 Alt = componentesFortementeConexas(grafo)
-
-#print (grafo.matriz)
-#print(Alt)
-
 # montando lista com os conjuntos 'cfcs'
 # a lógica eh ver quem nao antecede ninguem, depois ir percorrendo a partir dele.
 antecedeAlguem = [False] * len(Alt)
@@ -72,9 +74,14 @@ for u in range (1,len(Alt)):
     if(Alt[u] != None):
         antecessor = Alt[u]
         antecedeAlguem[antecessor] = True
+'''
+quem nao antecede ninguem eh Meio Que A Raiz de um cfc,
+entao vou percorrer ateh nao ter mais antecessor para montar
+uma lista com todos os cfcs
+'''
 cfcs = []
 for u in range (1,len(Alt)):
-    if(not antecedeAlguem): #ehMeioQueARaiz
+    if(not antecedeAlguem[u]):
         cfc = [u]
         a = Alt[u] #index do antecessor
         k = 10000
@@ -85,4 +92,9 @@ for u in range (1,len(Alt)):
         cfcs.append(cfc)
 
 #montando output
-#print(cfcs)
+for c in cfcs:
+    s = ""
+    for v in c:
+        s = s + str(v) + ","
+    s = s[:(len(s)-1)]
+    print(s)

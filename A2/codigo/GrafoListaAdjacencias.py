@@ -1,5 +1,5 @@
 class Grafo:
-    def __init__(self, caminho_do_arquivo, dirigido="dirigido"):
+    def __init__(self, caminho_do_arquivo, dirigido="naodirigido"):
         arquivo = open(caminho_do_arquivo)
         titulo, vertices = arquivo.readline().split()
         vertices = int(vertices)
@@ -24,7 +24,7 @@ class Grafo:
             v1, v2, peso = linha.split()
             v1 = int(v1); v2 = int(v2); peso = float(peso)
             self.vertices[v1].arcos.append(Arco(self.vertices[v1],self.vertices[v2], peso))
-            if(dirigido == "dirigido"):
+            if(dirigido == "naodirigido"):
                 self.vertices[v2].arcos.append(Arco(self.vertices[v2],self.vertices[v1], peso))
             self.vqtdArestas += 1
             linha = arquivo.readline()
@@ -97,6 +97,32 @@ class Grafo:
                 destino = exArco.origem
                 peso = exArco.peso
                 v.arcos[a] = Arco(origem,destino,peso)
+        for V in range(1,len(self.vertices)):
+            v = self.vertices[V]
+            for a in range(len(v.arcos)):
+                ark = v.arcos.pop(0)
+                for ve in range(1,len(self.vertices)):
+                    ver = self.vertices[ve]
+                    if(ver.rotulo == ark.origem.rotulo):
+                        ver.arcos.append(ark)
+                        break
+
+                '''
+            for ar in range(len(v.arcos)):
+                ark = v.arcos.pop(0)
+                for ve in range(1,len(self.vertices)):
+                    ver = self.vertices[ve]
+                    if(ver.rotulo == ark.origem.rotulo):
+                        ver.arcos.append(ark)
+                        break
+                        '''
+
+
+    def printArestas(self):
+        for v in self.vertices:
+            if v != None:
+                for a in v.arcos:
+                    print('('+str(a.origem.rotulo)+','+str(a.destino.rotulo)+')')
 
 class Vertice:
     def __init__(self, numero, rotulo):
