@@ -71,3 +71,6 @@ class Grafo:
             return self.matriz[vertice1 - 1][vertice2 - 1]
         else:
             return float("inf")
+
+    def transpor(self):
+         self.matriz = self.matriz.transpose()

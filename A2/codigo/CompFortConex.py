@@ -1,4 +1,4 @@
-from Grafo import Grafo
+from GrafoListaAdjacencias import Grafo
 from heap import BinHeap
 
 def dfsVisit(G, v, C, T, A, F, tempo):
@@ -15,6 +15,7 @@ def dfsVisit(G, v, C, T, A, F, tempo):
     F[v] = tempo[0]
 
 def dfs (G, lista):
+    #print(lista)
     paraTodoV = G.qtdVertices()+1
     C = [False] * paraTodoV
     T = [float('inf')] * paraTodoV
@@ -31,42 +32,38 @@ def componentesFortementeConexas(G):
     for u in range(1,G.qtdVertices()+1):
         lista.append(u)
     [C, T, Al, F] = dfs(G,lista) #Alinha eh Ancestrais
-    Gt = G #nem vamo usar G depois #copy.deepcopy(G)
 
     #isso resume as linhas 3 e 4 do algoritmo (o transpose)
-    Gt.matriz = Gt.matriz.transpose()
+    G.transpor()
 
-    # para pegar a ordem crescente usei heap, mas deu um erro dai fui p lista
-    '''
-    heap = BinHeap()
-    for u in range(1,len(F)):
-        heap.insert(u, F[u])
-    lista = []
-    for u in range(1,len(F)):
-        lista.insert(0,heap.delMin())
-    '''
-
-    lista = []
-    Fcopy = []
+    lista = [] # a ideia eh percorrer os tempos finais Fcopy, e sempre
+    menor = float('inf') # pegar o menor e inserir no começo da 'lista'
+    Fcopy = [] # com a finalidade de que a lista tenha os vertices decrescendo
     for k in range(len(F)):
         Fcopy.append(F[k])
-
-    for i in range(len(F)): #pega o menor e insere no inicio
+    for i in range(len(F)-1): #pega o menor e insere no inicio
         Fcopy[0] = float('inf')
-        menor = Fcopy[0]
+        menor = float('inf')
         idx=0;
         for k in range(len(Fcopy)):
             if (Fcopy[k]<menor):
                 idx = k;
                 menor = Fcopy[k]
-                Fcopy[k] = float('inf')
+        Fcopy[idx] = float('inf')
         lista.insert(0,idx)
+
 
     [Ct,Tt,Alt,Ft] = dfs(G,lista)
     return Alt
 
+
+# ----------- main abaixo
+
 grafo = Grafo("grafoTeste1.txt")
 Alt = componentesFortementeConexas(grafo)
+
+#print (grafo.matriz)
+#print(Alt)
 
 # montando lista com os conjuntos 'cfcs'
 # a lógica eh ver quem nao antecede ninguem, depois ir percorrendo a partir dele.
@@ -88,4 +85,4 @@ for u in range (1,len(Alt)):
         cfcs.append(cfc)
 
 #montando output
-print(cfcs)
+#print(cfcs)

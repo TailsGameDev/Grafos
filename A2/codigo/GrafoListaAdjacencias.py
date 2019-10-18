@@ -88,6 +88,16 @@ class Grafo:
                 return v.arcos[i].peso
         return 999999999999
 
+    def transpor(self):
+        for V in range(1,len(self.vertices)):
+            v = self.vertices[V]
+            for a in range(len(v.arcos)):
+                exArco = v.arcos[a]
+                origem  = exArco.destino
+                destino = exArco.origem
+                peso = exArco.peso
+                v.arcos[a] = Arco(origem,destino,peso)
+
 class Vertice:
     def __init__(self, numero, rotulo):
         self.numero = numero
