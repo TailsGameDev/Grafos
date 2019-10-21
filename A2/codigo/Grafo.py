@@ -52,14 +52,14 @@ class Grafo:
     def vizinhos_saintes(self, vertice):
         lista_vizinhos = []
         for i in range(self.matriz.shape[0]):
-            if self.matriz[i][vertice - 1] != 0:
+            if self.matriz[vertice - 1][i] != 0:
                 lista_vizinhos.append(i + 1)
         return lista_vizinhos
 
     def vizinhos_entrantes(self, vertice):
         lista_vizinhos = []
         for i in range(self.matriz.shape[0]):
-            if self.matriz[vertice - 1][i] != 0:
+            if self.matriz[i][vertice - 1] != 0:
                 lista_vizinhos.append(i + 1)
         return lista_vizinhos
 
