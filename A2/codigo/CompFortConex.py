@@ -1,5 +1,4 @@
 from GrafoListaAdjacencias import Grafo
-from heap import BinHeap
 
 def dfsVisit(G, v, C, T, A, F, tempo):
     #v -= 1
