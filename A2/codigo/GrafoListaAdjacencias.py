@@ -117,6 +117,13 @@ class Grafo:
                         break
                         '''
 
+    def getArcos(self):
+        arcos = []
+        for v in self.vertices:
+            if v != None:
+                for a in v.arcos:
+                    arcos.append(a)
+        return arcos
 
     def printArestas(self):
         for v in self.vertices:
@@ -137,3 +144,5 @@ class Arco:
         self.destino = v2
         self.peso = peso
         self.visitado = False
+    def toString(self):
+        return "("+str(self.origem.numero)+","+str(self.destino.numero)+")"
