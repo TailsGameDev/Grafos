@@ -22,4 +22,5 @@ def converte(caminho):
         f.truncate(0)
         f.write(txt)
         f.close()
+        return 'convertido.txt'
 converte('instancia.gr')
