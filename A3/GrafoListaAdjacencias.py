@@ -91,6 +91,14 @@ class Grafo:
                 return v.arcos[i].peso
         return self.naoTemArco
 
+    def getArco(self, u, v):
+        if(isinstance(v,int)):
+            v = self.vertices[v]; u = self.vertices[u]
+
+        for i in range(len(v.arcos)):
+            if (v.arcos[i].destino == u):
+                return v.arcos[i]
+
     def transpor(self):
         for V in range(1,len(self.vertices)):
             v = self.vertices[V]
@@ -143,9 +151,6 @@ class Vertice:
 
 class Arco:
     def __init__(self, v1, v2, peso = 1):
-        if isinstance(v1, int):
-            v1 = self.vertices[v1]
-            v2 = self.vertices[v2]
         self.origem = v1
         self.destino = v2
         self.peso = peso
