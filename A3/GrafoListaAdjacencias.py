@@ -56,15 +56,15 @@ class Grafo:
 
     def vizinhos(self, v):
         ehInt = isinstance(v,int)
-        if(ehInt):
+        if ehInt:
             v = self.vertices[v]
         vizinhos = []
         numVizinhos = []
         for i in range(len(v.arcos)):
             vizinhos.append(v.arcos[i].destino)
-            numVizinhos.append(v.arcos[i].destino.numero)
+            numVizinhos.append(v.arcos[i].destino.numero + 1)
 
-        if(ehInt):
+        if ehInt:
             return numVizinhos
         else:
             return vizinhos
@@ -82,22 +82,31 @@ class Grafo:
 
         return False
 
-    def peso(self, u, v):
+    def getPeso(self, u, v):
         if(isinstance(v,int)):
             v = self.vertices[v]; u = self.vertices[u]
 
-        for i in range(len(v.arcos)):
-            if (v.arcos[i].destino == u):
-                return v.arcos[i].peso
+        for i in range(len(u.arcos)):
+            if (u.arcos[i].destino == v):
+                return u.arcos[i].peso
         return self.naoTemArco
+
+    def setPeso(self, u, v, peso):
+        if(isinstance(v,int)):
+            v = self.vertices[v]; u = self.vertices[u]
+
+        for i in range(len(u.arcos)):
+            if (u.arcos[i].destino == v):
+                u.arcos[i].peso = peso
 
     def getArco(self, u, v):
         if(isinstance(v,int)):
-            v = self.vertices[v]; u = self.vertices[u]
+            u = self.vertices[u];
+            v = self.vertices[v];
 
-        for i in range(len(v.arcos)):
-            if (v.arcos[i].destino == u):
-                return v.arcos[i]
+        for i in range(len(u.arcos)):
+            if (u.arcos[i].destino == v):
+                return u.arcos[i]
 
     def transpor(self):
         for V in range(1,len(self.vertices)):
