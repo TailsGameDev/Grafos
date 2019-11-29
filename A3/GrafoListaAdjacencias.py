@@ -18,7 +18,6 @@ class Grafo:
             vertice = Vertice(numero, rotulo)
             self.vertices[i] = vertice
 
-
         linha = arquivo.readline() #deveria ser a linha que diz "*edges"
         linha = arquivo.readline()
         self.vqtdArestas = 0
@@ -127,16 +126,6 @@ class Grafo:
                         ver.arcos.append(ark)
                         break
 
-                '''
-            for ar in range(len(v.arcos)):
-                ark = v.arcos.pop(0)
-                for ve in range(1,len(self.vertices)):
-                    ver = self.vertices[ve]
-                    if(ver.rotulo == ark.origem.rotulo):
-                        ver.arcos.append(ark)
-                        break
-                        '''
-
     def getArcos(self):
         arcos = []
         for v in self.vertices:
@@ -166,3 +155,4 @@ class Arco:
         self.visitado = False
     def toString(self):
         return "("+str(self.origem.numero)+","+str(self.destino.numero)+")"
+
