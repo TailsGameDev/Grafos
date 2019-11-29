@@ -2,44 +2,37 @@ from GrafoListaAdjacencias import *
 import copy
 from conversor import *
 
-def RedeResidual(G):
-    # Gl = copy.deepcopy(G)
-    Gl = Grafo("db128.gr", "dirigido")
+def RedeResidual(G, caminho):
+    Gl = Grafo(caminho, "dirigido")
     for u in range(1, G.qtdVertices() + 1):
         for v in range(1, G.qtdVertices() + 1):
             if G.getPeso(u, v) != G.naoTemArco:
-                if Gl.getPeso(v, u) == G.naoTemArco:
-                    Gl.vertices[v].arcos.append(Arco(Gl.vertices[v], Gl.vertices[u], G.getPeso(u, v)))
-                    Gl.getArco(u, v).peso = 0
-                else:
-                    Gl.getArco(v, u).peso = G.getPeso(u, v) - Gl.getPeso(u, v)
-
+                Gl.getArco(u, v).peso = G.getPeso(u, v)
+                Gl.vertices[v].arcos.append(Arco(Gl.vertices[v], Gl.vertices[u], 0))
     return Gl
 
-def EdmondsKarp2(G):
-    Gf = RedeResidual(G)
-    p = EdmondsKarp(G, Gf)
+def EdmondsKarp(G, Gf):
+    p = buscaEdmondsKarp(G, Gf)
+    fluxo_maximo = 0
     while p != None:
-        print(p)
         cf = 999999999
         for i in range(len(p) - 1):
-            if Gf.getArco(p[i + 1], p[i]).peso < cf:
-                cf = Gf.getArco(p[i + 1], p[i]).peso
-        print("cf %d" % cf)
+            if Gf.getArco(p[i], p[i + 1]).peso < cf:
+                cf = Gf.getArco(p[i], p[i + 1]).peso
+        fluxo_maximo += cf
         for i in range(len(p) - 1):
-            if G.getPeso(p[i], p[i] + 1) != G.naoTemArco:
-                G.getArco(p[i], p[i] + 1).peso += cf
+            if G.getPeso(p[i], p[i + 1]) != G.naoTemArco:
+                Gf.getArco(p[i + 1], p[i]).peso += cf
+                Gf.getArco(p[i], p[i + 1]).peso -= cf
             else:
-                G.getArco(p[i], p[i] + 1).peso -= cf
-        print("pdg %d" % G.getPeso(1, 128))
-        Gf = RedeResidual(G)
-        print("pdr %d" % Gf.getPeso(128, 1))
-        p = EdmondsKarp(G, Gf)
+                print("%d" % p[i])
+                Gf.getArco(p[i + 1], p[i]).peso -= cf
+                Gf.getArco(p[i], p[i + 1]).peso += cf
+        p = buscaEdmondsKarp(G, Gf)
+    return fluxo_maximo
 
 
-def EdmondsKarp(G, Gf = "deixaQueMontaNoConstrutor"): # s eh o vertice em 1, por convenção
-    if Gf == "deixaQueMontaNoConstrutor":
-        Gf = RedeResidual(G)
+def buscaEdmondsKarp(G, Gf): # s eh o vertice em 1, por convenção
     s = 1
     t = len(G.vertices) - 1
     C = [False] * (G.qtdVertices() + 1)
@@ -51,7 +44,7 @@ def EdmondsKarp(G, Gf = "deixaQueMontaNoConstrutor"): # s eh o vertice em 1, por
         u = Q.pop(0)
         vizinhos_saintes = G.vizinhos_saintes(u)
         for v in vizinhos_saintes:
-            if not C[v] and ((G.getPeso(u, v) - Gf.getPeso(u, v))>0): # O QUE  EH F?????? Acho que eh o cf da rede residual
+            if not C[v] and Gf.getPeso(u, v) > 0: # O QUE  EH F?????? Acho que eh o cf da rede residual
                 C[v] = True
                 A[v] = u
                 if v == t:
@@ -64,8 +57,8 @@ def EdmondsKarp(G, Gf = "deixaQueMontaNoConstrutor"): # s eh o vertice em 1, por
                 Q.append(v)
     return None
 
-# converte("instancia.txt")
-g = Grafo("db128.gr", "dirigido")
-EdmondsKarp2(g)
-# resultado = EdmondsKarp(g)
-# print(resultado)
+caminho = "db128.gr"
+g = Grafo(caminho, "dirigido")
+gr = RedeResidual(g, caminho)
+fluxo_maximo = EdmondsKarp(g, gr)
+print("Fluxo maximo: %d" % fluxo_maximo)
